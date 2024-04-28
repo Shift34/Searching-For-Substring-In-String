@@ -17,8 +17,8 @@ namespace SearchingForSubstringInStringConsole
         {
             var algms = new List<ISubstringSearch>()
             {
-                new BoyerMoore(),
                 new BruteForce(),
+                new BoyerMoore(),
                 new RabinKarp(),
                 new KnuthMorrisPratt()
             };
@@ -27,7 +27,7 @@ namespace SearchingForSubstringInStringConsole
             {
                 text = sr.ReadToEnd().ToLower();
             }
-            string pattern = "спросил";
+            string pattern = "предпринять";
             foreach (var algm in algms)
             {
                 var actual = algm.IndexesOf(pattern, text);
@@ -36,8 +36,8 @@ namespace SearchingForSubstringInStringConsole
             {
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
-                var actual = algm.IndexesOf(pattern, text);
-                stopwatch.Stop();
+                List<int> find = algm.IndexesOf(pattern, text);
+                stopwatch.Stop();   
                 Console.WriteLine(algm.Name + ": " + stopwatch.ElapsedMilliseconds);
             }
             Console.ReadKey();
