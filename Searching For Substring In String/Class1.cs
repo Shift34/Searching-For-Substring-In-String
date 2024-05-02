@@ -32,10 +32,8 @@ namespace Searching_For_Substring_In_String
                 p = (p * Radix + pattern[i]) % Mod;
                 ts = (ts * Radix + text[i]) % Mod;
             }
-            p = (p + Mod) % Mod;
-            ts = (ts + Mod) % Mod;
 
-            for (int i = 0; i <= textLength - patternLength; i++)
+            for (int i = 0; i < textLength - patternLength; i++)
             {
                 if (p == ts)
                 {
@@ -56,7 +54,19 @@ namespace Searching_For_Substring_In_String
                     ts = (ts + Mod) % Mod;
                 }
             }
-
+            if (p == ts)
+            {
+                bool flag = true;
+                for (int j = textLength - patternLength; j < textLength; j++)
+                {
+                    if (pattern[j - (textLength - patternLength)] != text[j])
+                    {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag) res.Add(textLength - patternLength);
+            }
             return res;
         }
     }

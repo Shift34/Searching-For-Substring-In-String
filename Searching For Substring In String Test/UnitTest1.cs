@@ -67,7 +67,23 @@ namespace Searching_For_Substring_In_String_Test
                 }
             }
         }
-
-
+        [TestMethod]
+        public void FindSublineNoExist()
+        {
+            var algms = new List<ISubstringSearch>()
+            {
+                new BoyerMoore(),
+                new BruteForce(),
+                new RabinKarp(),
+                new KnuthMorrisPratt()
+            };
+            string text = "aaaaaaaaaa"; //10
+            string pattern = "ab";
+            foreach (var algm in algms)
+            {
+                var actual = algm.IndexesOf(pattern, text);
+                Assert.AreEqual(0, actual.Count());
+            }
+        }
     }
 }
