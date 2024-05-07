@@ -23,7 +23,7 @@ namespace SearchingForSubstringInStringConsole
             {
                 text = sr.ReadToEnd().ToLower();
             }
-            string pattern = "предпринять";
+            string pattern = "ДеННЫЕ".ToLower();
             foreach (var algm in algms)
             {
                 var actual = algm.IndexesOf(pattern, text);
@@ -33,6 +33,7 @@ namespace SearchingForSubstringInStringConsole
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
                 List<int> find = algm.IndexesOf(pattern, text);
+                Console.WriteLine(find.Count);
                 stopwatch.Stop();   
                 Console.WriteLine(algm.Name + ": " + stopwatch.ElapsedMilliseconds);
             }

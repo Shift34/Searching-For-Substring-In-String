@@ -54,6 +54,7 @@ namespace Searching_For_Substring_In_String
                     ts = (ts + Mod) % Mod;
                 }
             }
+
             if (p == ts)
             {
                 bool flag = true;
@@ -145,7 +146,9 @@ namespace Searching_For_Substring_In_String
         {
             List<int> indexs = new List<int>();
             if (text.Length == 0 || pattern.Length == 0) return indexs;
-            Dictionary<char, int> dictionary = CreateTable(pattern);
+            Dictionary<char,int> dictionary = CreateTable(pattern);
+            int[] table = CreateTableStopSuffix(pattern);
+            int[] table1 = CreateTableMassiv(pattern);
             int shift = 1;
             for (int i = pattern.Length - 1; i < text.Length; i += shift)
             {
@@ -157,7 +160,7 @@ namespace Searching_For_Substring_In_String
                     {
                         if (pattern[length] != text[j])
                         {
-                            shift = dictionary[pattern[length]];
+                            shift = table[length + 1];
                             flag = false;
                             break;
                         }
@@ -171,13 +174,13 @@ namespace Searching_For_Substring_In_String
                 }
                 else
                 {
-                    if (!dictionary.ContainsKey(text[i]))
+                    if (pattern.IndexOf(text[i]) != -1)
                     {
-                        shift = pattern.Length;
+                        shift = table1[pattern.IndexOf(text[i])];
                     }
                     else
                     {
-                        shift = dictionary[text[i]];
+                        shift = pattern.Length;
                     }
                 }
             }
@@ -186,7 +189,7 @@ namespace Searching_For_Substring_In_String
         private Dictionary<char, int> CreateTable(string pattern)
         {
             Dictionary<char, int> dictionary = new Dictionary<char, int>();
-            for(int i = pattern.Length - 2; i >= 0; i--)
+            for (int i = pattern.Length - 2; i >= 0; i--)
             {
                 if (!dictionary.ContainsKey(pattern[i]))
                 {
@@ -198,6 +201,65 @@ namespace Searching_For_Substring_In_String
                 dictionary.Add(pattern[pattern.Length - 1], pattern.Length);
             }
             return dictionary;
+        }
+        private int[] CreateTableMassiv(string pattern)
+        {
+            int[] massiv = new int[pattern.Length];
+            for (int i = pattern.Length - 2; i >= 0; i--)
+            {
+                massiv[i] = pattern.Length - 1 - pattern.LastIndexOf(pattern[i], pattern.Length - 2);
+            }
+            if (pattern.IndexOf(pattern[pattern.Length - 1]) == pattern.Length - 1)
+            {
+                massiv[pattern.Length - 1] = pattern.Length;
+            }
+            else
+            {
+                massiv[pattern.Length - 1] = pattern.Length - 1 - pattern.IndexOf(pattern[pattern.Length - 1]);
+            }
+            return massiv;
+        }
+        private int[] CreateTableStopSuffix(string pattern)
+        {
+            int[] table = new int[pattern.Length];
+            int lastPrefixPosition = pattern.Length;
+            table[0] = lastPrefixPosition;
+            for (int i = pattern.Length - 1; i >= 1; i--)
+            {
+                int m = pattern.Length - i;
+                string text = pattern.Substring(i);
+                bool flag = true;
+                for (int j = i - 1; j >= 0 ; j--)
+                {
+                    string text1 = pattern.Substring(j,m);
+                    if (text == text1)
+                    {
+                        table[i] = i - j;
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag)
+                {
+                    bool flag1 = true;
+                    for (int j = i + 1; j < pattern.Length; j++)
+                    {
+                        string text1 = pattern.Substring(j);
+                        string text2 = pattern.Substring(0, pattern.Length - j);
+                        if (text1 == text2)
+                        {
+                            table[i] = j - 0;
+                            flag1 = false;
+                            break;
+                        }
+                    }
+                    if (flag1)
+                    {
+                        table[i] = pattern.Length;
+                    }
+                }
+            }
+            return table;
         }
     }
     public class BruteForce : ISubstringSearch

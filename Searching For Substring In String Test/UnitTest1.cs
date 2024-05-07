@@ -85,5 +85,24 @@ namespace Searching_For_Substring_In_String_Test
                 Assert.AreEqual(0, actual.Count());
             }
         }
+        [TestMethod]
+        public void FindSubline()
+        {
+            var algms = new List<ISubstringSearch>()
+            {
+                new BoyerMoore(),
+                new RabinKarp(),
+                new KnuthMorrisPratt()
+            };
+            string text = "abeccaabadbabbad"; //10
+            string pattern = "abbad";
+            var BF = new BruteForce();
+            var expected = BF.IndexesOf(pattern, text);
+            foreach (var algm in algms)
+            {
+                var actual = algm.IndexesOf(pattern, text);
+                CollectionAssert.AreEqual(expected, actual);
+            }
+        }
     }
 }
