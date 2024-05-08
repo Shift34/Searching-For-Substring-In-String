@@ -23,7 +23,7 @@ namespace SearchingForSubstringInStringConsole
             {
                 text = sr.ReadToEnd().ToLower();
             }
-            string pattern = "ДеННЫЕ".ToLower();
+            string pattern = "умопомешательство".ToLower();
             foreach (var algm in algms)
             {
                 var actual = algm.IndexesOf(pattern, text);

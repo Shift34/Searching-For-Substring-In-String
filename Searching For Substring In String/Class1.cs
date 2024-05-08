@@ -19,14 +19,14 @@ namespace Searching_For_Substring_In_String
         public List<int> IndexesOf(string pattern, string text)
         {
             List<int> res = new List<int>();
-            int Mod = 7;
+            int Mod = (int)Math.Pow(2, 16) - 1;
             int Radix = 13;
             int textLength = text.Length;
             int patternLength = pattern.Length;
             if (textLength == 0 || patternLength == 0) return res;
-            int h = (int)Math.Pow(Radix, patternLength - 1) % Mod;
-            int p = 0;
-            int ts = 0;
+            long h = (long)Math.Pow(Radix, patternLength - 1) % Mod;
+            long p = 0;
+            long ts = 0;
             for (int i = 0; i < patternLength; i++)
             {
                 p = (p * Radix + pattern[i]) % Mod;
